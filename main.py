@@ -8,7 +8,21 @@ import requests
 # Before running, you need to provide your Instagram username.
 
 # 1. Your Instagram username
-USERNAME = "this.user.sud"
+CONFIG_FILE = "config.json"
+
+try:
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+        config = json.load(f)
+    USERNAME = config.get("USERNAME")
+    if not USERNAME:
+        print(f"Error: 'USERNAME' not found in {CONFIG_FILE}. Please configure it.")
+        exit()
+except FileNotFoundError:
+    print(f"Error: {CONFIG_FILE} not found. Please create it with your Instagram username.")
+    exit()
+except json.JSONDecodeError:
+    print(f"Error: Could not decode JSON from {CONFIG_FILE}. Please check its format.")
+    exit()
 
 # 2. Your Instagram Session ID.
 #    This will be prompted for when you run the script, or you can set it
